@@ -2,10 +2,15 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>QR Scanner - Blue Fade | Gallery & Kamera</title>
-    <!-- Library untuk pemindaian QR (kamera + file) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>QR Studio by lifx ganteng bangetttttttt</title>
+    <!-- Library Scanner & QR Generator -->
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <!-- Font Awesome 6 (ikon bagus) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Inter + Poppins tebal gepeng -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,500;14..32,700;14..32,800;14..32,900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,88 +19,184 @@
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: linear-gradient(145deg, #eef2ff 0%, #d9e6ff 100%);
+            font-family: 'Inter', 'Poppins', sans-serif;
+            background: linear-gradient(145deg, #e0e7ff 0%, #f0f4ff 100%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             padding: 20px;
-        }
-
-        /* Glassmorphism + Blue Fade White theme */
-        .scanner-app {
-            max-width: 680px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(14px);
-            border-radius: 3rem;
-            box-shadow: 0 20px 40px rgba(0, 35, 70, 0.2), 0 0 0 1px rgba(255,255,255,0.6);
-            overflow: hidden;
             transition: all 0.3s ease;
         }
 
-        /* header blue fade */
-        .header {
-            padding: 1.8rem 1.5rem 1rem;
-            text-align: center;
-            background: linear-gradient(135deg, #ffffffcc, #eef5ffcc);
-            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+        /* Menu & Animasi */
+        .app-wrapper {
+            max-width: 750px;
+            margin: 0 auto;
+            animation: fadeInUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
 
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Get Started Splash */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f2b3d, #1a4a6f);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: all 0.7s ease;
+            backdrop-filter: blur(2px);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .splash-content {
+            text-align: center;
+            animation: pulseGlow 1.4s infinite alternate;
+            padding: 2rem;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); text-shadow: 0 0 0px rgba(255,255,200,0);}
+            100% { transform: scale(1.03); text-shadow: 0 0 20px rgba(255,240,150,0.8);}
+        }
+
+        .splash-content i {
+            font-size: 5rem;
+            color: #ffec9f;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 12px #ffd966);
+        }
+
+        .splash-content h1 {
+            font-size: 2.6rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFF9C4, #FFE0A3);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
             letter-spacing: -0.5px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
 
-        .header p {
-            color: #2563eb;
-            font-weight: 500;
-            margin-top: 8px;
-            font-size: 0.9rem;
-            background: rgba(255,255,240,0.5);
-            display: inline-block;
-            padding: 4px 16px;
-            border-radius: 40px;
-            backdrop-filter: blur(4px);
+        .splash-content p {
+            color: #e0f2fe;
+            font-weight: 600;
+            margin: 15px 0 25px;
         }
 
-        /* video container dengan efek soft blue */
-        .video-section {
-            margin: 20px 20px 10px;
-            background: #f0f7ff;
-            border-radius: 2rem;
-            padding: 6px;
-            box-shadow: 0 8px 20px rgba(0, 55, 120, 0.12);
+        .get-started-btn {
+            background: rgba(255,255,245,0.2);
+            backdrop-filter: blur(12px);
+            border: 2px solid #fff6cf;
+            padding: 14px 36px;
+            border-radius: 60px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #fff3c9;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
 
-        .camera-wrapper {
-            position: relative;
-            border-radius: 1.6rem;
+        .get-started-btn:hover {
+            background: #ffedb5;
+            color: #1a3f5c;
+            transform: scale(1.03);
+            border-color: white;
+        }
+
+        /* Main Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            border-radius: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255,255,240,0.6);
             overflow: hidden;
-            background: #111827;
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4), 0 8px 18px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        /* Menu Tab */
+        .menu-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 20px 20px 0;
+            background: rgba(255,255,245,0.5);
+            border-bottom: 1px solid rgba(59,130,246,0.2);
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 14px 6px;
+            font-weight: 800;
+            font-size: 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            color: #2c5a7a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .tab-btn i {
+            font-size: 1.2rem;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(110deg, #1e3a8a, #3b82f6);
+            color: white;
+            box-shadow: 0 8px 18px rgba(59,130,246,0.4);
+            transform: translateY(-3px);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 24px 20px 28px;
+            animation: fadeSlide 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateX(12px);}
+            to { opacity: 1; transform: translateX(0);}
+        }
+
+        /* Scanner Area */
+        .camera-box {
+            background: #0b1e2a;
+            border-radius: 1.8rem;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
         #reader {
             width: 100%;
-            background: #000;
         }
 
-        #reader video {
-            border-radius: 1.5rem;
-            object-fit: cover;
-            width: 100% !important;
-            display: block;
-        }
-
-        /* overlay scan frame - gaya putih kebiruan */
         .scan-overlay {
             position: absolute;
             top: 0;
@@ -103,499 +204,437 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        .qr-corner {
-            position: absolute;
-            width: 65px;
-            height: 65px;
-            border: 4px solid rgba(59, 130, 246, 0.85);
-            filter: drop-shadow(0 0 6px #a0c4ff);
-            border-radius: 12px;
-        }
-        .corner-top-left { top: 18px; left: 18px; border-right: none; border-bottom: none; }
-        .corner-top-right { top: 18px; right: 18px; border-left: none; border-bottom: none; }
-        .corner-bottom-left { bottom: 18px; left: 18px; border-right: none; border-top: none; }
-        .corner-bottom-right { bottom: 18px; right: 18px; border-left: none; border-top: none; }
-
-        .scan-line-blue {
-            position: absolute;
-            width: 80%;
-            height: 2.5px;
-            background: linear-gradient(90deg, transparent, #3b82f6, #a5d8ff, #3b82f6, transparent);
-            left: 10%;
-            border-radius: 4px;
-            box-shadow: 0 0 8px #7ab3ff;
-            animation: scanFloat 2.4s ease-in-out infinite;
+        .result-area {
+            background: #eef3ffcc;
+            border-radius: 1.5rem;
+            padding: 14px;
+            margin: 15px 0;
+            border-left: 6px solid #3b82f6;
         }
 
-        @keyframes scanFloat {
-            0% { top: 20%; opacity: 0.7; }
-            50% { top: 75%; opacity: 1; }
-            100% { top: 20%; opacity: 0.7; }
-        }
-
-        /* panel hasil dan tombol */
-        .info-panel {
-            padding: 8px 20px 20px;
-        }
-
-        .result-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
-            border-radius: 1.8rem;
-            padding: 1rem 1rem;
-            margin: 12px 0 16px;
-            border: 1px solid rgba(59, 130, 246, 0.5);
-            box-shadow: 0 6px 14px rgba(0, 79, 158, 0.08);
-            transition: 0.2s;
-        }
-
-        .result-label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #2563eb;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .result-value {
-            font-size: 1rem;
-            font-weight: 500;
-            word-break: break-all;
-            color: #0c4a6e;
-            background: #ffffffcc;
-            padding: 12px 14px;
-            border-radius: 1.2rem;
-            margin-top: 10px;
-            font-family: 'SF Mono', 'Fira Code', monospace;
-            border-left: 4px solid #3b82f6;
-        }
-
-        .button-group {
+        .btn-group {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            justify-content: center;
-            margin: 8px 0 12px;
+            margin: 15px 0 8px;
         }
 
         .btn {
-            background: #ffffffdd;
+            padding: 12px 18px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-family: 'Inter', sans-serif;
             border: none;
-            padding: 10px 20px;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: #1e40af;
+            cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(4px);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            border: 1px solid #bfdbfe;
+            transition: 0.2s;
+            font-size: 0.85rem;
+            background: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
 
         .btn-primary {
-            background: linear-gradient(110deg, #1e3a8a, #3b82f6);
+            background: linear-gradient(95deg, #2563eb, #1e3a8a);
             color: white;
-            border: none;
-            box-shadow: 0 4px 12px rgba(59,130,246,0.3);
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(110deg, #2563eb, #1e40af);
-            transform: scale(0.97);
-            box-shadow: 0 6px 14px rgba(37,99,235,0.4);
         }
 
         .btn-outline {
-            background: #f9faffcc;
-            border: 1px solid #93c5fd;
+            background: #ffffffcc;
+            border: 1px solid #7aa9ff;
+            color: #1e40af;
         }
 
-        .btn-outline:hover {
-            background: #eff6ff;
-            transform: scale(0.97);
+        /* Generate QR section */
+        .input-group {
+            margin-bottom: 18px;
         }
 
-        .gallery-label {
-            background: #eef2ff;
-            border-radius: 60px;
-            padding: 10px 20px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            text-align: center;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .status-chip {
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .badge-status {
-            background: rgba(59,130,246,0.15);
-            padding: 6px 14px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 600;
+        .input-group label {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
             color: #1e3a8a;
-            backdrop-filter: blur(4px);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 1.2rem;
+            border: 1px solid #b9d0f0;
+            background: #fefefe;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .file-hint {
+            background: #eef2ff;
+            padding: 12px;
+            border-radius: 1.2rem;
+            font-size: 0.75rem;
+            margin-top: 6px;
+        }
+
+        .qr-preview {
+            background: white;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            border-radius: 1.8rem;
+            margin: 14px 0;
+            border: 2px dashed #7aa9ff;
+        }
+
+        #qrcode-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .download-btn {
+            background: #2b5e3b;
+            color: white;
         }
 
         footer {
             text-align: center;
+            padding: 14px;
             font-size: 0.7rem;
-            padding: 15px;
-            color: #5b7cae;
-            background: #ffffffb3;
-            border-top: 1px solid #cbdffc;
+            color: #3b6e8f;
+            border-top: 1px solid #cfe2ff;
         }
 
-        input#uploadQR {
-            display: none;
+        i {
+            width: 24px;
         }
 
-        @media (max-width: 580px) {
-            .scanner-app {
-                border-radius: 2rem;
+        @media (max-width: 550px) {
+            .tab-btn span {
+                display: none;
             }
-            .qr-corner {
-                width: 45px;
-                height: 45px;
+            .tab-btn i {
+                margin: 0;
+                font-size: 1.4rem;
             }
-            .btn {
-                padding: 8px 16px;
-                font-size: 0.75rem;
-            }
-            .result-value {
-                font-size: 0.85rem;
+            .tab-btn {
+                padding: 12px 0;
             }
         }
     </style>
 </head>
 <body>
 
-<div class="scanner-app">
-    <div class="header">
-        <h1>✨ QR Scanner</h1>
-        <p>Kamera langsung atau unggah dari galeri • Tema Blue Fade</p>
+<!-- GET STARTED SPLASH FULL ANIMASI -->
+<div class="splash-screen" id="splashScreen">
+    <div class="splash-content">
+        <i class="fas fa-qrcode"></i>
+        <h1>QR Studio</h1>
+        <p>Scan & Buat QR Code<br>Dari Segala Bentuk File</p>
+        <div class="get-started-btn" id="getStartedBtn">
+            <i class="fas fa-rocket"></i> GET STARTED
+            <i class="fas fa-arrow-right"></i>
+        </div>
     </div>
+</div>
 
-    <div class="video-section">
-        <div class="camera-wrapper" id="cameraWrapper">
-            <div id="reader"></div>
-            <div class="scan-overlay">
-                <div class="qr-corner corner-top-left"></div>
-                <div class="qr-corner corner-top-right"></div>
-                <div class="qr-corner corner-bottom-left"></div>
-                <div class="qr-corner corner-bottom-right"></div>
-                <div class="scan-line-blue"></div>
+<div class="app-wrapper" id="mainApp" style="display: none;">
+    <div class="glass-card">
+        <!-- Menu Tab dengan full animasi -->
+        <div class="menu-tabs">
+            <button class="tab-btn active" data-tab="scanner">
+                <i class="fas fa-camera"></i> <span>Pindai QR</span>
+            </button>
+            <button class="tab-btn" data-tab="generator">
+                <i class="fas fa-qrcode"></i> <span>Buat QR</span>
+            </button>
+        </div>
+
+        <!-- TAB 1: SCANNER QR (KAMERA + GALERI PENYIMPANAN) -->
+        <div class="tab-content active" id="scannerTab">
+            <div class="camera-box" id="cameraContainer">
+                <div id="reader"></div>
+                <div class="scan-overlay"></div>
             </div>
-        </div>
-    </div>
-
-    <div class="info-panel">
-        <div class="result-card">
-            <div class="result-label">
-                <span>🔍 HASIL SCAN QR</span>
+            <div class="result-area">
+                <div><i class="fas fa-info-circle"></i> <strong>Hasil Scan:</strong></div>
+                <div id="scanResult" style="word-break:break-all; margin-top:8px; font-weight:500;">— Belum ada scan —</div>
             </div>
-            <div class="result-value" id="qrResultText">— Belum ada scan —</div>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="startCamBtn"><i class="fas fa-video"></i> Mulai Kamera</button>
+                <button class="btn btn-outline" id="stopCamBtn"><i class="fas fa-stop"></i> Hentikan</button>
+                <label class="btn btn-outline" style="cursor:pointer;" id="galleryLabel">
+                    <i class="fas fa-images"></i> Dari Galeri
+                    <input type="file" id="galleryInput" accept="image/*" style="display:none;">
+                </label>
+                <button class="btn btn-outline" id="clearScanBtn"><i class="fas fa-trash-alt"></i> Bersihkan</button>
+            </div>
+            <div id="scanStatusBadge" style="font-size:0.75rem; text-align:center; margin-top:8px; color:#2563eb;"><i class="fas fa-info-circle"></i> Klik mulai kamera atau upload gambar</div>
         </div>
 
-        <div class="button-group">
-            <button class="btn btn-primary" id="startCameraBtn">📷 Mulai Kamera</button>
-            <button class="btn btn-outline" id="stopCameraBtn">⏹️ Hentikan</button>
-            <label for="uploadQR" class="btn btn-outline gallery-label">🖼️ Pilih dari Galeri</label>
-            <input type="file" id="uploadQR" accept="image/*" capture="environment">
-            <button class="btn btn-outline" id="clearResultBtn">🗑️ Bersihkan</button>
+        <!-- TAB 2: GENERATE QR CODE (LINK, VIDEO, FOTO, DLL) SUPPORT SEMUA FILE -->
+        <div class="tab-content" id="generatorTab">
+            <div class="input-group">
+                <label><i class="fas fa-link"></i> Teks / URL / Data</label>
+                <input type="text" id="qrTextInput" placeholder="Masukkan link, teks, atau data apapun ...">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-file-alt"></i> Upload File (Video, Foto, Dokumen, Audio, dll)</label>
+                <input type="file" id="fileForQR" accept="*/*">
+                <div class="file-hint" id="fileHint"><i class="fas fa-cloud-upload-alt"></i> Pilih file apapun (gambar, video, pdf, zip, dll). Nama file akan diencode ke QR.</div>
+            </div>
+            <div class="qr-preview">
+                <div id="qrcode-container"></div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="generateQRBtn"><i class="fas fa-magic"></i> Generate QR Code</button>
+                <button class="btn download-btn" id="downloadQRBtn"><i class="fas fa-download"></i> Simpan QR (PNG)</button>
+            </div>
+            <p style="font-size:0.7rem; margin-top:12px; text-align:center;"><i class="fas fa-lightbulb"></i> QR akan berisi teks atau path file (nama). Untuk file besar, QR berisi nama & ekstensi.</p>
         </div>
-        <div class="status-chip" id="cameraStatusText">
-            <span class="badge-status">⚪ Kamera tidak aktif | Bisa juga upload gambar</span>
-        </div>
+        <footer>
+            <i class="fas fa-sync-alt"></i> Scan & Generate QR • Support Semua File • Animasi Menarik
+        </footer>
     </div>
-    <footer>
-        🌊 Blue Fade Theme &nbsp;|&nbsp; Scan QR code dari kamera atau file gambar (JPG/PNG)
-    </footer>
 </div>
 
 <script>
-    // ======================== INISIALISASI ==========================
-    let html5QrCodeScanner = null;   // instance untuk kamera live
-    let isScanningActive = false;
-    let currentCameraId = null;
+    // ---------------------- GET STARTED ANIMASI --------------------------
+    const splash = document.getElementById('splashScreen');
+    const mainApp = document.getElementById('mainApp');
+    const getStartedBtn = document.getElementById('getStartedBtn');
 
-    // Elemen-elemen
-    const readerDiv = document.getElementById("reader");
-    const startBtn = document.getElementById("startCameraBtn");
-    const stopBtn = document.getElementById("stopCameraBtn");
-    const clearResultBtn = document.getElementById("clearResultBtn");
-    const uploadInput = document.getElementById("uploadQR");
-    const resultSpan = document.getElementById("qrResultText");
-    const statusSpan = document.getElementById("cameraStatusText").querySelector(".badge-status");
-
-    // Helper update status
-    function updateStatus(text, isActive = false) {
-        if (isActive) {
-            statusSpan.innerHTML = `🟢 ${text}`;
-            statusSpan.style.background = "#b9dcff";
-            statusSpan.style.color = "#00337e";
-        } else {
-            statusSpan.innerHTML = `⚪ ${text}`;
-            statusSpan.style.background = "rgba(59,130,246,0.15)";
-            statusSpan.style.color = "#1e3a8a";
-        }
-    }
-
-    // Fungsi untuk menampilkan hasil scan (dari kamera maupun file)
-    function displayResult(decodedText) {
-        if (!decodedText) return;
-        // update teks hasil
-        resultSpan.innerHTML = decodedText;
-        // efek highlight ringan
-        const resultCard = document.querySelector(".result-card");
-        resultCard.style.transform = "scale(1.01)";
-        resultCard.style.transition = "0.1s";
-        setTimeout(() => { resultCard.style.transform = ""; }, 200);
-        
-        // getar jika didukung (opsional)
-        if (navigator.vibrate) navigator.vibrate(80);
-        
-        // log console
-        console.log("QR Terbaca:", decodedText);
-    }
-
-    // ------------------- FUNGSI KAMERA LIVE -------------------------
-    // Membersihkan scanner kamera sebelumnya
-    async function stopCameraScanner() {
-        if (html5QrCodeScanner && isScanningActive) {
-            try {
-                await html5QrCodeScanner.stop();
-                html5QrCodeScanner.clear();
-            } catch (err) {
-                console.warn("Stop error:", err);
-            }
-        }
-        html5QrCodeScanner = null;
-        isScanningActive = false;
-        updateStatus("Kamera dihentikan", false);
-    }
-
-    // Mulai kamera live dengan library html5-qrcode
-    async function startLiveScanner() {
-        // Jika sudah aktif, jangan restart
-        if (isScanningActive && html5QrCodeScanner) {
-            updateStatus("Kamera sudah aktif", true);
-            return;
-        }
-        
-        // Hentikan terlebih dahulu jika ada instance sebelumnya
-        await stopCameraScanner();
-        
-        try {
-            // Cek ketersediaan kamera
-            const cameras = await Html5Qrcode.getCameras();
-            if (!cameras || cameras.length === 0) {
-                throw new Error("Tidak ada kamera ditemukan.");
-            }
-            
-            // Pilih kamera belakang (environment) atau pertama
-            let backCam = cameras.find(cam => 
-                cam.label.toLowerCase().includes("back") || 
-                cam.label.toLowerCase().includes("environment") ||
-                cam.label.toLowerCase().includes("rear")
-            );
-            if (!backCam) backCam = cameras[0];
-            currentCameraId = backCam.id;
-            
-            // Inisialisasi scanner di div reader
-            html5QrCodeScanner = new Html5Qrcode("reader");
-            const config = {
-                fps: 12,
-                qrbox: { width: 280, height: 280 },
-                aspectRatio: 1.333,
-                showTorchButtonIfSupported: true,
-            };
-            
-            await html5QrCodeScanner.start(
-                currentCameraId,
-                config,
-                (decodedText) => {
-                    // Callback sukses scan dari kamera live
-                    displayResult(decodedText);
-                },
-                (errorMsg) => {
-                    // error scan biasa diabaikan (biasanya frame tidak terdeteksi)
-                    if (errorMsg && errorMsg.includes("No MultiFormat")) return;
-                    console.debug("Scan error: ", errorMsg);
-                }
-            );
-            
-            isScanningActive = true;
-            updateStatus("Memindai (kamera aktif)", true);
-        } catch (err) {
-            console.error("Gagal memulai kamera:", err);
-            updateStatus("Gagal akses kamera: " + (err.message || "Izin diperlukan"), false);
-            isScanningActive = false;
-            html5QrCodeScanner = null;
-            // jika div reader perlu placeholder
-            alert("Tidak dapat mengakses kamera. Pastikan izin diberikan atau periksa perangkat.");
-        }
-    }
-
-    // ------------------- SCAN DARI FILE/GALERI -----------------------
-    // menggunakan Html5QrcodeOffline atau langsung library untuk scan file
-    // Kita gunakan Html5Qrcode (static method) untuk memproses gambar dari file
-    async function scanImageFromFile(file) {
-        if (!file) return;
-        
-        // validasi tipe gambar
-        if (!file.type.match(/image\/(jpeg|jpg|png|webp|bmp)/)) {
-            alert("Harap pilih file gambar yang valid (JPG, PNG, WebP, BMP)");
-            return;
-        }
-        
-        updateStatus("Memindai gambar dari galeri...", false);
-        // Buat objek sementara untuk membaca QR dari file
-        const html5QrCode = new Html5Qrcode("reader"); // id dummy, sebenarnya kita pakai metode scanFileV2
-        try {
-            // Fungsi ini secara otomatis memproses file dan menghasilkan decoded text
-            const decodedText = await html5QrCode.scanFile(file, true);
-            if (decodedText && decodedText.trim() !== "") {
-                displayResult(decodedText);
-                updateStatus("Scan galeri berhasil ✔️", false);
-                // Beri jeda singkat kembalikan status jika kamera tidak aktif
-            } else {
-                throw new Error("Tidak ada QR code terdeteksi dalam gambar");
-            }
-        } catch (err) {
-            console.warn("Gagal scan dari file:", err);
-            resultSpan.innerHTML = "❌ Gagal membaca QR dari gambar. Pastikan gambar jelas mengandung QR.";
-            updateStatus("Gagal memindai gambar", false);
-            setTimeout(() => {
-                if (!isScanningActive) updateStatus("Kamera tidak aktif | Gunakan tombol mulai", false);
-                else updateStatus("Memindai (kamera)", true);
-            }, 1800);
-        } finally {
-            html5QrCode.clear(); // membersihkan resource
-        }
-    }
-
-    // Event handler upload file
-    uploadInput.addEventListener("change", (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            scanImageFromFile(file);
-        }
-        // reset input agar bisa upload file yang sama lagi nantinya
-        uploadInput.value = "";
+    getStartedBtn.addEventListener('click', () => {
+        splash.style.opacity = '0';
+        splash.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            splash.style.display = 'none';
+            mainApp.style.display = 'block';
+            document.body.style.overflow = 'auto';
+            // animasi tambahan
+            mainApp.style.animation = 'fadeInUp 0.7s ease';
+        }, 600);
     });
-    
-    // ------------------- TOMBOL KONTROL -------------------------
-    startBtn.addEventListener("click", () => {
-        startLiveScanner().catch(e => {
-            console.error(e);
-            updateStatus("Gagal memulai kamera: periksa izin", false);
+
+    // ---------------------- GLOBAL VARIABLES SCANNER ----------------------
+    let html5Scanner = null;
+    let isScanning = false;
+    const readerDiv = document.getElementById("reader");
+    const scanResultDiv = document.getElementById("scanResult");
+    const startCam = document.getElementById("startCamBtn");
+    const stopCam = document.getElementById("stopCamBtn");
+    const galleryInput = document.getElementById("galleryInput");
+    const galleryLabel = document.getElementById("galleryLabel");
+    const clearScanBtn = document.getElementById("clearScanBtn");
+    const scanStatus = document.getElementById("scanStatusBadge");
+
+    // Fungsi status
+    function setScanStatus(text, isActive = false) {
+        scanStatus.innerHTML = `<i class="fas ${isActive ? 'fa-eye' : 'fa-info-circle'}"></i> ${text}`;
+        if(isActive) scanStatus.style.color = "#0f5b3a";
+        else scanStatus.style.color = "#2563eb";
+    }
+
+    // Hentikan kamera
+    async function stopScanner() {
+        if(html5Scanner && isScanning) {
+            try {
+                await html5Scanner.stop();
+                html5Scanner.clear();
+            } catch(e) { console.warn(e); }
+            html5Scanner = null;
+            isScanning = false;
+            setScanStatus("Kamera dihentikan. Gunakan 'Mulai Kamera'", false);
+        }
+    }
+
+    // Mulai kamera
+    async function startCameraScanner() {
+        if(isScanning) {
+            setScanStatus("Scanner sudah aktif", true);
+            return;
+        }
+        await stopScanner();
+        try {
+            const cameras = await Html5Qrcode.getCameras();
+            if(!cameras.length) throw new Error("Tidak ada kamera");
+            let backCam = cameras.find(c => c.label.toLowerCase().includes("back") || c.label.toLowerCase().includes("environment"));
+            if(!backCam) backCam = cameras[0];
+            html5Scanner = new Html5Qrcode("reader");
+            const config = { fps: 12, qrbox: { width: 280, height: 280 }, aspectRatio: 1.333, showTorchButtonIfSupported: true };
+            await html5Scanner.start(backCam.id, config, (decodedText) => {
+                scanResultDiv.innerHTML = `<i class="fas fa-check-circle" style="color:#2b9348;"></i> ${decodedText}`;
+                if(navigator.vibrate) navigator.vibrate(80);
+                setScanStatus("QR terdeteksi!", true);
+                setTimeout(() => { if(isScanning) setScanStatus("Memindai...", true); }, 1500);
+            }, (err) => { if(err && !err.includes("No MultiFormat")) console.debug(err); });
+            isScanning = true;
+            setScanStatus("📷 Kamera aktif, arahkan ke QR Code", true);
+        } catch(err) {
+            console.error(err);
+            setScanStatus("Gagal akses kamera: izin ditolak / error", false);
+            alert("Tidak dapat mengakses kamera. Pastikan izin diberikan atau gunakan galeri.");
+        }
+    }
+
+    // Scan dari file (galeri / penyimpanan)
+    async function scanFromFile(file) {
+        if(!file) return;
+        if(!file.type.match(/image\/(jpeg|png|webp|bmp|jpg)/)) {
+            alert("Harap pilih file gambar yang berisi QR Code (JPG, PNG, WebP)");
+            return;
+        }
+        setScanStatus("Memproses gambar dari galeri...", false);
+        const tempScanner = new Html5Qrcode("reader"); // gunakan elemen sementara
+        try {
+            const decoded = await tempScanner.scanFile(file, true);
+            if(decoded) {
+                scanResultDiv.innerHTML = `<i class="fas fa-image"></i> ${decoded}`;
+                setScanStatus("Scan dari galeri berhasil!", true);
+                if(navigator.vibrate) navigator.vibrate(60);
+            } else throw new Error("Tidak terdeteksi");
+        } catch(e) {
+            scanResultDiv.innerHTML = "❌ Gagal membaca QR dari gambar. Pastikan QR code jelas.";
+            setScanStatus("Gagal scan dari gambar", false);
+        } finally {
+            await tempScanner.clear();
+        }
+    }
+
+    // Event listeners Scanner
+    startCam.addEventListener("click", startCameraScanner);
+    stopCam.addEventListener("click", stopScanner);
+    clearScanBtn.addEventListener("click", () => { scanResultDiv.innerHTML = "— Belum ada scan —"; setScanStatus("Hasil dibersihkan", false); });
+    galleryLabel.addEventListener("click", () => galleryInput.click());
+    galleryInput.addEventListener("change", (e) => {
+        if(e.target.files.length) scanFromFile(e.target.files[0]);
+        galleryInput.value = "";
+    });
+
+    // ---------------------- GENERATE QR CODE (SEMUA FILE) ----------------------
+    let currentQR = null;
+    const qrTextInput = document.getElementById("qrTextInput");
+    const fileForQR = document.getElementById("fileForQR");
+    const generateBtn = document.getElementById("generateQRBtn");
+    const downloadQRBtn = document.getElementById("downloadQRBtn");
+    const qrcodeContainer = document.getElementById("qrcode-container");
+    const fileHint = document.getElementById("fileHint");
+
+    // Fungsi untuk membuat QR dari teks atau file
+    function generateQR(content) {
+        if(!content || content.trim() === "") {
+            alert("Masukkan teks/URL atau pilih file terlebih dahulu!");
+            return false;
+        }
+        qrcodeContainer.innerHTML = ""; // reset
+        try {
+            currentQR = new QRCode(qrcodeContainer, {
+                text: content,
+                width: 200,
+                height: 200,
+                colorDark: "#1e3a8a",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            return true;
+        } catch(e) { alert("Gagal generate QR: " + e.message); return false; }
+    }
+
+    // Mendapatkan konten berdasarkan prioritas: file > teks (jika file dipilih, kita encode nama file + info)
+    function getContentFromInput() {
+        const file = fileForQR.files[0];
+        if(file) {
+            // Support semua file: video, foto, dokumen, dll. Kita encode nama file + ukuran + tipe
+            const fileName = file.name;
+            const fileSize = (file.size / 1024).toFixed(2) + " KB";
+            const fileType = file.type || "unknown";
+            const lastModified = new Date(file.lastModified).toLocaleString();
+            // Membuat string yang informatif
+            const fileInfo = `FILE: ${fileName} | Ukuran: ${fileSize} | Tipe: ${fileType} | Mod: ${lastModified}`;
+            fileHint.innerHTML = `<i class="fas fa-check-circle"></i> File siap: <strong>${fileName}</strong> (${fileSize}) akan diencode ke QR.`;
+            return fileInfo;
+        } else {
+            fileHint.innerHTML = `<i class="fas fa-cloud-upload-alt"></i> Pilih file apapun (gambar, video, pdf, zip, dll). Nama & info file akan diencode ke QR.`;
+            return qrTextInput.value.trim() !== "" ? qrTextInput.value.trim() : null;
+        }
+    }
+
+    generateBtn.addEventListener("click", () => {
+        const content = getContentFromInput();
+        if(content) {
+            generateQR(content);
+        } else {
+            alert("Silakan isi teks / link atau pilih file terlebih dahulu!");
+        }
+    });
+
+    // Download QR Code sebagai PNG (full fitur)
+    downloadQRBtn.addEventListener("click", () => {
+        const qrImg = qrcodeContainer.querySelector("img");
+        if(qrImg) {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = qrImg.width;
+            canvas.height = qrImg.height;
+            ctx.drawImage(qrImg, 0, 0, qrImg.width, qrImg.height);
+            const link = document.createElement("a");
+            link.download = "qrcode_studio.png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        } else if(qrcodeContainer.querySelector("canvas")) {
+            // fallback jika qrcodejs membuat canvas
+            const canvasElem = qrcodeContainer.querySelector("canvas");
+            const link = document.createElement("a");
+            link.download = "qrcode_studio.png";
+            link.href = canvasElem.toDataURL();
+            link.click();
+        } else {
+            alert("Belum ada QR Code yang di-generate.");
+        }
+    });
+
+    // Reset file hint saat file berubah
+    fileForQR.addEventListener("change", () => {
+        if(fileForQR.files.length) {
+            const f = fileForQR.files[0];
+            fileHint.innerHTML = `<i class="fas fa-file"></i> File terpilih: ${f.name} (${(f.size/1024).toFixed(2)} KB). Klik Generate QR.`;
+            // otomatis mengisi teks input sebagai opsional (tapi biarkan)
+        } else {
+            fileHint.innerHTML = `<i class="fas fa-cloud-upload-alt"></i> Pilih file apapun (video, foto, dokumen, dll). Nama + info file akan diencode.`;
+        }
+    });
+
+    // Tab Switching Animasi Full
+    const tabs = document.querySelectorAll(".tab-btn");
+    const contents = document.querySelectorAll(".tab-content");
+    tabs.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const tabId = btn.getAttribute("data-tab");
+            tabs.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            contents.forEach(c => c.classList.remove("active"));
+            if(tabId === "scanner") document.getElementById("scannerTab").classList.add("active");
+            else if(tabId === "generator") document.getElementById("generatorTab").classList.add("active");
+            // stop kamera saat pindah ke generator? biar user experience oke
+            if(tabId === "generator" && isScanning) {
+                stopScanner();
+            }
         });
     });
-    
-    stopBtn.addEventListener("click", async () => {
-        await stopCameraScanner();
-        updateStatus("Kamera dimatikan", false);
-        // Menampilkan placeholder elegan, tidak menghapus area reader namun video hilang
+
+    // Pastikan saat halaman ditutup stop kamera
+    window.addEventListener("beforeunload", () => {
+        if(html5Scanner && isScanning) html5Scanner.stop().catch(e=>{});
     });
-    
-    clearResultBtn.addEventListener("click", () => {
-        resultSpan.innerHTML = "— Belum ada scan —";
-        if (navigator.vibrate) navigator.vibrate(40);
-    });
-    
-    // Saat halaman ditutup, matikan kamera dengan baik
-    window.addEventListener("beforeunload", async () => {
-        if (html5QrCodeScanner && isScanningActive) {
-            try { await html5QrCodeScanner.stop(); } catch(e) {}
-        }
-    });
-    
-    // styling extra untuk library overlay biar seamless
-    const addExtraStyles = () => {
-        const style = document.createElement('style');
-        style.textContent = `
-            #reader {
-                background: #0a2f44;
-                min-height: 280px;
-                border-radius: 1.5rem;
-            }
-            #reader video {
-                border-radius: 1.5rem;
-                object-fit: cover;
-            }
-            /* tombol senter bawaan */
-            #reader button {
-                background: rgba(255,255,240,0.9);
-                border-radius: 50px;
-                color: #1e40af;
-                border: none;
-                font-size: 12px;
-                padding: 4px 12px;
-                font-weight: bold;
-            }
-            .camera-wrapper {
-                position: relative;
-            }
-            .scan-overlay {
-                z-index: 10;
-            }
-        `;
-        document.head.appendChild(style);
-    };
-    addExtraStyles();
-    
-    // Inisialisasi status awal (tidak scan)
-    updateStatus("Klik 'Mulai Kamera' atau upload dari galeri", false);
-    
-    // Preventive: Jika pengguna selesai memindai dari file, tapi kamera belum aktif, tidak mengganggu
-    
-    // FITUR OPSIONAL: drag and drop sederhana biar makin user friendly? tapi cukup dengan tombol galeri
-    // Membuat efek pendukung: hapus error saat file tidak terdeteksi.
-    
-    // tambahan untuk pencegahan double instance start ketika scanner crash
+
+    // Default Contoh QR pertama kali biar tidak kosong (optional)
     window.addEventListener("load", () => {
-        // pastikan tidak otomatis start (perlu interaksi user karena kebijakan browser)
-        console.log("Aplikasi QR Scanner - Blue Fade Theme Siap");
-        // cek dukungan mediaDevices
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            updateStatus("Browser tidak support kamera, gunakan fitur galeri", false);
-            startBtn.disabled = true;
-            stopBtn.disabled = true;
-        } else {
-            startBtn.disabled = false;
-            stopBtn.disabled = false;
-        }
+        // Demo teks awal untuk generator
+        qrTextInput.value = "https://qrstudioku.web.app";
+        generateQR("https://qrstudioku.web.app");
+        setScanStatus("Klik Mulai Kamera atau upload gambar dari galeri", false);
     });
-    
-    // Mencegah konflik ukuran, resize observer sederhana (optional)
-    const resizeObserver = new ResizeObserver(() => {
-        if (html5QrCodeScanner && isScanningActive) {
-            // opsional: jika diperlukan, bisa refresh config, tapi tidak perlu
-        }
-    });
-    if (readerDiv) resizeObserver.observe(readerDiv);
-    
-    // Final touches: Saat beralih tab mungkin video berhenti, namun library handle.
-    // tampilkan informasi bahwa galery support code 2D.
 </script>
 </body>
 </html>
